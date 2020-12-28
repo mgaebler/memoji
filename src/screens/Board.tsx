@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { useDispatch } from "react-redux";
-import { cardReveal } from "../features/game/reducer";
+import { cardReveal, cardsHide } from "../features/game/reducer";
 
 const Board: FC = () => {
   const dispatch = useDispatch();
@@ -8,8 +8,9 @@ const Board: FC = () => {
   return (
     <div>
       <button onClick={() => dispatch(cardReveal({ id: "asdlfasdkfja" }))}>
-        Click
+        cardReveal
       </button>
+      <button onClick={() => dispatch(cardsHide())}>Hide</button>
     </div>
   );
 };
