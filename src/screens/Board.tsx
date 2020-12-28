@@ -5,15 +5,21 @@ import { cardReveal, cardsHide, cardsInit } from "../features/game/reducer";
 import { RootState } from "../store";
 import styled from "styled-components";
 
-const CardContainer = styled.div({
+type ICardContainer = {
+  items: number;
+};
+
+const CardContainer = styled.div<ICardContainer>(({ items }) => ({
   display: "grid",
   flexWrap: "wrap",
-  gridTemplateColumns: "20vw 20vw 20vw 20vw",
-  margin: "50px 10vw",
-});
+  gridTemplateColumns: `${100 / items}vh `.repeat(items),
+  gridTemplateRows: `${100 / items}vh `.repeat(items),
+  // margin: "50px 10vw",
+}));
 
 const CardTile = styled.div({
   padding: "12px",
+  margin: "8px",
   border: "thin solid black",
   // width: "10vh",
   // height: "10vh",
@@ -26,7 +32,7 @@ const CardTile = styled.div({
 const Board: FC = () => {
   const dispatch = useDispatch();
   const cards = useSelector<RootState, Card[]>((state) => state.game.cards);
-
+  const items = 4;
   useEffect(() => {
     dispatch(cardsInit());
   }, []);
@@ -34,7 +40,7 @@ const Board: FC = () => {
   return (
     <div>
       <button onClick={() => dispatch(cardsHide())}>Hide</button>
-      <CardContainer>
+      <CardContainer items={items}>
         {cards.map((card) => {
           return (
             <CardTile

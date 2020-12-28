@@ -36,7 +36,8 @@ export const gameReducer = createReducer(initialGameState, (builder) => {
     return { cards, players: state.players };
   });
   builder.addCase(cardsInit, (state) => {
-    const cards = generateCardPairs(4);
+    const items = 4;
+    const cards = generateCardPairs(Math.pow(items, 2) / 2);
     randomArrayShuffle(cards);
     return { cards, players: state.players };
   });
