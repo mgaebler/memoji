@@ -16,11 +16,16 @@ const CardGrid = styled.div<ICardGrid>(({ items }) => ({
 }));
 
 const GridTile = styled.div({
-  // outline: "thin dashed red",
+  outline: "thin dashed red",
   padding: "12px",
+  perspective: "600px",
 });
 
-const CardContainer = styled.div({
+type ICardContainer = {
+  flipped: boolean;
+};
+
+const CardContainer = styled.div<ICardContainer>((props) => ({
   fontSize: "6rem",
   cursor: "pointer",
   display: "flex",
@@ -28,15 +33,31 @@ const CardContainer = styled.div({
   alignItems: "center",
   height: "100%",
   width: "100%",
+  position: "relative",
+  transition: "transform 600ms",
+  transformStyle: "preserve-3d",
+  transform: props.flipped ? "rotateY(180deg)" : "rotateY(0deg)",
+}));
+
+const CardBase = styled.div({
+  height: "100%",
+  width: "100%",
+  position: "absolute",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  border: "thin solid gray",
+  backfaceVisibility: "hidden",
+  borderRadius: 4,
 });
 
-const CardFront = styled(CardContainer)({
-  border: "thin solid gray",
-  borderRadius: 4,
+const CardFront = styled(CardBase)({
+  backgroundColor: "red",
+  transform: "rotateY(180deg)",
 });
-const CardBack = styled(CardContainer)({
-  border: "thin solid gray",
-  borderRadius: 4,
+
+const CardBack = styled(CardBase)({
+  backgroundColor: "blueviolet",
 });
 
 const Board: FC = () => {
@@ -55,13 +76,11 @@ const Board: FC = () => {
           return (
             <GridTile key={card.id}>
               <CardContainer
+                flipped={card.revealed}
                 onClick={() => dispatch(cardReveal({ id: card.id }))}
               >
-                {card.revealed ? (
-                  <CardFront>{card.icon}</CardFront>
-                ) : (
-                  <CardBack>foo</CardBack>
-                )}
+                <CardFront>{card.icon}</CardFront>
+                <CardBack>foo</CardBack>
               </CardContainer>
             </GridTile>
           );
