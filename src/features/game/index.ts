@@ -1,9 +1,7 @@
 import { createReducer, createAction } from "@reduxjs/toolkit";
 import { Game } from "../../domain/Game";
-import {
-  generateCardPairs,
-  randomArrayShuffle,
-} from "../../functions/generateCards";
+import { generateCardPairs } from "../../functions/generateCards";
+import { randomArrayShuffle } from "../../functions/randomArrayShuffle";
 
 const initialGameState: Game = {
   cards: [
@@ -12,12 +10,19 @@ const initialGameState: Game = {
     // { id: "asdfasdf", icon: "😉", revealed: false },
     // { id: "adfasdfasdf", icon: "🥰", revealed: false },
   ],
-  players: [],
+  players: [
+    {
+      id: "007",
+      color: "red",
+      score: 0,
+    },
+  ],
 };
 
 export const cardReveal = createAction<{ id: string }>("game/CARD_REVEAL");
 export const cardsHide = createAction("game/CARDS_HIDE");
 export const cardAssign = createAction<{ id: string }>("game/CARDS_ASSIGN");
+
 export const nextPlayer = createAction("game/PLAYER_NEXT");
 export const cardsInit = createAction("game/CARDS_INIT");
 
@@ -40,5 +45,9 @@ export const gameReducer = createReducer(initialGameState, (builder) => {
     const cards = generateCardPairs(Math.pow(items, 2) / 2);
     randomArrayShuffle(cards);
     return { cards, players: state.players };
+  });
+  builder.addCase(cardAssign, (state, action) => {
+    //
+    const assignedCards = state.cards;
   });
 });

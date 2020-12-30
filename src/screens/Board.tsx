@@ -1,7 +1,7 @@
 import { FC, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Card } from "../domain/Card";
-import { cardReveal, cardsHide, cardsInit } from "../features/game/reducer";
+import { cardReveal, cardsHide, cardsInit } from "../features/game";
 import { RootState } from "../store";
 import styled from "styled-components";
 import IconDiamond from "./assets/diamond.svg";
@@ -76,6 +76,27 @@ const Board: FC = () => {
     dispatch(cardsInit());
   }, [dispatch]);
 
+  const revealedCards = cards.filter((card) => card.revealed === true);
+  console.log(revealedCards);
+
+  useEffect(() => {
+    // if revealed Cards = 2,
+    if (revealedCards.length === 2) {
+      if (revealedCards[0].icon === revealedCards[1].icon) {
+        // if icons are the same, assign user id to card
+        console.log("awesome");
+      } else {
+        // if icons are not the same, hide all cards -- dispatch(cardsHide)
+        console.log("not so lucky");
+        setTimeout(() => dispatch(cardsHide()), 1500);
+      }
+    }
+  }, [revealedCards, dispatch]);
+
+  const handleReveal = (cardId: string) => {
+    dispatch(cardReveal({ id: cardId }));
+  };
+
   return (
     <div>
       {/* <button onClick={() => dispatch(cardsHide())}>Hide</button> */}
@@ -85,7 +106,10 @@ const Board: FC = () => {
             <GridTile key={card.id}>
               <CardContainer
                 flipped={card.revealed}
-                onClick={() => dispatch(cardReveal({ id: card.id }))}
+                onClick={() => {
+                  // prevent click if two cards are already revealed
+                  if (revealedCards.length < 2) handleReveal(card.id);
+                }}
               >
                 <CardFront>{card.icon}</CardFront>
                 <CardBack></CardBack>
