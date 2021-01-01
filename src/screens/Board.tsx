@@ -124,7 +124,6 @@ const Board: FC = () => {
         {cards.map((card) => {
           return (
             <GridTile key={card.id}>
-              {/* <Fade> */}
               <CardContainer
                 flipped={card.revealed || Boolean(card.playerId)}
                 onClick={() => {
@@ -135,7 +134,6 @@ const Board: FC = () => {
                 <CardFront>{card.icon}</CardFront>
                 <CardBack></CardBack>
               </CardContainer>
-              {/* </Fade> */}
             </GridTile>
           );
         })}

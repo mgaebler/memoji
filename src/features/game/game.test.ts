@@ -68,16 +68,10 @@ describe("Game feature", () => {
     const player = mockPlayer;
     const cardPairs = generateCardPairs(1);
 
-    // reveal all cards
-    const revealedPair = cardPairs.map((card) => ({
-      ...card,
-      revealed: true,
-    }));
-
-    const game: Game = { players: [player], cards: revealedPair };
+    const game: Game = { players: [player], cards: cardPairs };
 
     // expectation
-    const expectedCards = revealedPair.map((card) => ({
+    const expectedCards = cardPairs.map((card) => ({
       ...card,
       playerId: player.id,
     }));
@@ -89,7 +83,7 @@ describe("Game feature", () => {
         game,
         cardAssign({
           playerId: player.id,
-          cardIds: [revealedPair[0].id, revealedPair[1].id],
+          cardIds: [cardPairs[0].id, cardPairs[1].id],
         })
       )
     ).toEqual(expectedGame);
