@@ -6,8 +6,6 @@ import { RootState } from "../store";
 import styled from "styled-components";
 import IconDiamond from "./assets/diamond.svg";
 import { Player } from "../domain/Player";
-// @ts-ignore
-import Fade from "react-reveal";
 
 type ICardGrid = {
   items: number;
