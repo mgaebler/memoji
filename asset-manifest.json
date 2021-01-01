@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/memoji/static/css/main.49efbd48.chunk.css",
+    "main.js": "/memoji/static/js/main.e0fd6003.chunk.js",
+    "main.js.map": "/memoji/static/js/main.e0fd6003.chunk.js.map",
+    "runtime-main.js": "/memoji/static/js/runtime-main.72879051.js",
+    "runtime-main.js.map": "/memoji/static/js/runtime-main.72879051.js.map",
+    "static/js/2.f18acfa0.chunk.js": "/memoji/static/js/2.f18acfa0.chunk.js",
+    "static/js/2.f18acfa0.chunk.js.map": "/memoji/static/js/2.f18acfa0.chunk.js.map",
+    "static/js/3.ad12f935.chunk.js": "/memoji/static/js/3.ad12f935.chunk.js",
+    "static/js/3.ad12f935.chunk.js.map": "/memoji/static/js/3.ad12f935.chunk.js.map",
+    "index.html": "/memoji/index.html",
+    "static/css/main.49efbd48.chunk.css.map": "/memoji/static/css/main.49efbd48.chunk.css.map",
+    "static/js/2.f18acfa0.chunk.js.LICENSE.txt": "/memoji/static/js/2.f18acfa0.chunk.js.LICENSE.txt",
+    "static/media/diamond.332c8b00.svg": "/memoji/static/media/diamond.332c8b00.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.72879051.js",
+    "static/js/2.f18acfa0.chunk.js",
+    "static/css/main.49efbd48.chunk.css",
+    "static/js/main.e0fd6003.chunk.js"
+  ]
+}
