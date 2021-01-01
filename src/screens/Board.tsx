@@ -1,10 +1,13 @@
 import { FC, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Card } from "../domain/Card";
-import { cardReveal, cardsHide, cardsInit } from "../features/game";
+import { cardReveal, cardsHide, cardsInit, cardAssign } from "../features/game";
 import { RootState } from "../store";
 import styled from "styled-components";
 import IconDiamond from "./assets/diamond.svg";
+import { Player } from "../domain/Player";
+// @ts-ignore
+import Fade from "react-reveal";
 
 type ICardGrid = {
   items: number;
@@ -36,7 +39,6 @@ const CardContainer = styled.div<ICardContainer>((props) => ({
   alignItems: "center",
   height: "100%",
   width: "100%",
-
   position: "relative",
   transition: "transform 600ms",
   transformStyle: "preserve-3d",
@@ -64,6 +66,7 @@ const CardFront = styled(CardBase)({
 const CardBack = styled(CardBase)({
   backgroundColor: "#bbdefb",
   backgroundImage: `url(${IconDiamond})`,
+  backgroundPosition: "center",
   backgroundRepeat: "repeat",
   backgroundSize: 16,
 });
@@ -71,6 +74,10 @@ const CardBack = styled(CardBase)({
 const Board: FC = () => {
   const dispatch = useDispatch();
   const cards = useSelector<RootState, Card[]>((state) => state.game.cards);
+  const players = useSelector<RootState, Player[]>(
+    (state) => state.game.players
+  );
+  const player1 = players[0];
   const items = 4;
   useEffect(() => {
     dispatch(cardsInit());
@@ -84,14 +91,27 @@ const Board: FC = () => {
     if (revealedCards.length === 2) {
       if (revealedCards[0].icon === revealedCards[1].icon) {
         // if icons are the same, assign user id to card
-        console.log("awesome");
+
+        setTimeout(
+          () =>
+            dispatch(
+              cardAssign({
+                playerId: player1.id,
+                cardIds: [revealedCards[0].id, revealedCards[1].id],
+              })
+            ),
+          1500
+        );
+
+        // hide cards
+        // setTimeout(() => dispatch(cardsHide()), 1500);
       } else {
         // if icons are not the same, hide all cards -- dispatch(cardsHide)
         console.log("not so lucky");
         setTimeout(() => dispatch(cardsHide()), 1500);
       }
     }
-  }, [revealedCards, dispatch]);
+  }, [revealedCards, dispatch, player1]);
 
   const handleReveal = (cardId: string) => {
     dispatch(cardReveal({ id: cardId }));
@@ -104,8 +124,9 @@ const Board: FC = () => {
         {cards.map((card) => {
           return (
             <GridTile key={card.id}>
+              {/* <Fade> */}
               <CardContainer
-                flipped={card.revealed}
+                flipped={card.revealed || Boolean(card.playerId)}
                 onClick={() => {
                   // prevent click if two cards are already revealed
                   if (revealedCards.length < 2) handleReveal(card.id);
@@ -114,6 +135,7 @@ const Board: FC = () => {
                 <CardFront>{card.icon}</CardFront>
                 <CardBack></CardBack>
               </CardContainer>
+              {/* </Fade> */}
             </GridTile>
           );
         })}

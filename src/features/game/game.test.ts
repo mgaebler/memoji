@@ -1,4 +1,4 @@
-import { cardReveal, cardsHide, cardsInit, gameReducer } from ".";
+import { cardAssign, cardReveal, cardsHide, cardsInit, gameReducer } from ".";
 import { Game } from "../../domain/Game";
 import { generateCardPairs } from "../../functions/generateCards";
 
@@ -61,6 +61,38 @@ describe("Game feature", () => {
       ...game,
       cards: expectedPair,
     });
+  });
+
+  it("should handle cardAssign", () => {
+    // creates one pair of cards
+    const player = mockPlayer;
+    const cardPairs = generateCardPairs(1);
+
+    // reveal all cards
+    const revealedPair = cardPairs.map((card) => ({
+      ...card,
+      revealed: true,
+    }));
+
+    const game: Game = { players: [player], cards: revealedPair };
+
+    // expectation
+    const expectedCards = revealedPair.map((card) => ({
+      ...card,
+      playerId: player.id,
+    }));
+    const expectedGame: Game = { players: [player], cards: expectedCards };
+
+    // nachdem cardAssign durchgeführt wurde sollen alle aufgedeckten karten dem benutzer zugewiesen sein
+    expect(
+      gameReducer(
+        game,
+        cardAssign({
+          playerId: player.id,
+          cardIds: [revealedPair[0].id, revealedPair[1].id],
+        })
+      )
+    ).toEqual(expectedGame);
   });
 });
 

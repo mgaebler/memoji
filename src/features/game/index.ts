@@ -21,7 +21,9 @@ const initialGameState: Game = {
 
 export const cardReveal = createAction<{ id: string }>("game/CARD_REVEAL");
 export const cardsHide = createAction("game/CARDS_HIDE");
-export const cardAssign = createAction<{ id: string }>("game/CARDS_ASSIGN");
+export const cardAssign = createAction<{ playerId: string; cardIds: string[] }>(
+  "game/CARDS_ASSIGN"
+);
 
 export const nextPlayer = createAction("game/PLAYER_NEXT");
 export const cardsInit = createAction("game/CARDS_INIT");
@@ -47,7 +49,12 @@ export const gameReducer = createReducer(initialGameState, (builder) => {
     return { cards, players: state.players };
   });
   builder.addCase(cardAssign, (state, action) => {
-    //
-    const assignedCards = state.cards;
+    const { playerId, cardIds } = action.payload;
+    const newCardState = state.cards.map((card) =>
+      cardIds.includes(card.id)
+        ? { ...card, playerId: playerId, revealed: false }
+        : card
+    );
+    return { cards: newCardState, players: state.players };
   });
 });
