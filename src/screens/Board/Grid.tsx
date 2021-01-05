@@ -6,8 +6,13 @@ export type ICardGrid = {
 
 export const CardGrid = styled.div<ICardGrid>(({ items }) => ({
   display: "grid",
+  height: "100vh",
+  width: "100vw",
   // alignItems: "center",
   justifyContent: "center",
+  alignContent: "center",
+  // columnGap: "1vh",
+  // rowGap: "1vh",
   // make sure the cards fit in every orientation
   "@media screen and (orientation:landscape)": {
     gridTemplateColumns: `${100 / items}vh `.repeat(items),
