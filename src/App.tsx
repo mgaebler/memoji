@@ -1,6 +1,6 @@
 import React from "react";
 import { Provider } from "react-redux";
-import Board from "./screens/Board";
+import Board from "./screens/Board/Board";
 import "./reset.css";
 import store from "./store";
 
