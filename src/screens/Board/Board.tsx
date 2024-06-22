@@ -5,8 +5,8 @@ import {
   cardReveal,
   cardsHide,
   cardsInit,
-  cardAssign,
-} from "../../features/game";
+  cardAssign
+} from "../../features/game/gameActions";
 import { RootState } from "../../store";
 import { Player } from "../../domain/Player";
 import { CardGrid, GridTile } from "./Grid";

@@ -1,4 +1,5 @@
-import { cardAssign, cardReveal, cardsHide, cardsInit, gameReducer } from ".";
+import gameReducer from "./gameReducer";
+import { cardAssign, cardReveal, cardsHide, cardsInit } from "./gameActions";
 import { Game } from "../../domain/Game";
 import { generateCardPairs } from "../../functions/generateCards";
 

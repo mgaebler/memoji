@@ -1,7 +1,8 @@
-import { createReducer, createAction } from "@reduxjs/toolkit";
+import { createReducer } from "@reduxjs/toolkit";
 import { Game } from "../../domain/Game";
 import { generateCardPairs } from "../../functions/generateCards";
 import { randomArrayShuffle } from "../../functions/randomArrayShuffle";
+import { cardReveal, cardsHide, cardsInit, cardAssign } from "./gameActions";
 
 const initialGameState: Game = {
   cards: [
@@ -19,16 +20,7 @@ const initialGameState: Game = {
   ],
 };
 
-export const cardReveal = createAction<{ id: string }>("game/CARD_REVEAL");
-export const cardsHide = createAction("game/CARDS_HIDE");
-export const cardAssign = createAction<{ playerId: string; cardIds: string[] }>(
-  "game/CARDS_ASSIGN"
-);
-
-export const nextPlayer = createAction("game/PLAYER_NEXT");
-export const cardsInit = createAction("game/CARDS_INIT");
-
-export const gameReducer = createReducer(initialGameState, (builder) => {
+ const gameReducer = createReducer(initialGameState, (builder) => {
   builder.addCase(cardReveal, (state, action) => {
     const cards = state.cards.map((card) =>
       action.payload.id === card.id ? { ...card, revealed: true } : card
@@ -58,3 +50,5 @@ export const gameReducer = createReducer(initialGameState, (builder) => {
     return { cards: newCardState, players: state.players };
   });
 });
+
+export default gameReducer
