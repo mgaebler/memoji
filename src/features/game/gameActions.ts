@@ -16,3 +16,10 @@ export const nextPlayer = createAction("game/PLAYER_NEXT");
 export const addPlayer = createAction<{ id: string }>("game/ADD_PLAYER");
 // remove player
 export const removePlayer = createAction<{ id: string }>("game/REMOVE_PLAYER");
+
+/*
+set options
+*/
+export const setNumberOfCards = createAction<{ numberOfCards: number }>(
+  "game/SET_NUMBER_OF_CARDS",
+);

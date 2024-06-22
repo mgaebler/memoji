@@ -2,9 +2,17 @@ import { createReducer } from "@reduxjs/toolkit";
 import { Game } from "../../domain/Game";
 import { generateCardPairs } from "../../functions/generateCards";
 import { randomArrayShuffle } from "../../functions/randomArrayShuffle";
-import { cardReveal, cardsHide, cardsInit, cardAssign } from "./gameActions";
+import {
+  cardReveal,
+  cardsHide,
+  cardsInit,
+  cardAssign,
+  setNumberOfCards,
+} from "./gameActions";
 
 const initialGameState: Game = {
+  // TODO: currently it is only possible to use an initial set option of 4, but this should be an arbritary number between 1 and 10
+  numberOfCards: 4,
   cards: [
     // { id: "asdlfasdkfja", icon: "😀", revealed: false },
     // { id: "asdfasdfasdfasdf", icon: "🤣", revealed: false },
@@ -26,20 +34,23 @@ const gameReducer = createReducer(initialGameState, (builder) => {
       action.payload.id === card.id ? { ...card, revealed: true } : card,
     );
 
-    return { cards, players: state.players };
+    state.cards = cards;
+    return state;
   });
   builder.addCase(cardsHide, (state) => {
     // all cards which are not assigned to player already and
     // which are revealed true shall switch state to false
     const cards = state.cards.map((card) => ({ ...card, revealed: false }));
-    return { ...state, cards };
+    state.cards = cards;
+    return state;
   });
   // initialize the deck
   builder.addCase(cardsInit, (state) => {
-    const items = 4;
+    const items = state.numberOfCards;
     const cards = generateCardPairs(Math.pow(items, 2) / 2);
     randomArrayShuffle(cards);
-    return { ...state, cards };
+    state.cards = cards;
+    return state;
   });
   builder.addCase(cardAssign, (state, action) => {
     const { playerId, cardIds } = action.payload;
@@ -48,7 +59,15 @@ const gameReducer = createReducer(initialGameState, (builder) => {
         ? { ...card, playerId: playerId, revealed: false }
         : card,
     );
-    return { ...state, cards: newCardState };
+    state.cards = newCardState;
+    return state;
+  });
+
+  // control the number of cards
+  builder.addCase(setNumberOfCards, (state, action) => {
+    const { numberOfCards } = action.payload;
+    state.numberOfCards = numberOfCards;
+    return state;
   });
 });
 
