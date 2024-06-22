@@ -2,11 +2,18 @@ import gameReducer from "./gameReducer";
 import { cardAssign, cardReveal, cardsHide, cardsInit } from "./gameActions";
 import { Game } from "../../domain/Game";
 import { generateCardPairs } from "../../functions/generateCards";
+import { Player } from "../../domain/Player";
 
-const mockPlayer = {
+const mockPlayer: Player = {
   id: "007",
   color: "red",
   score: 0,
+};
+
+const mockGame: Game = {
+  initialPairs: 2,
+  players: [mockPlayer],
+  cards: [],
 };
 
 describe("Game feature", () => {
@@ -14,7 +21,7 @@ describe("Game feature", () => {
     // for now it would be good to hold a player object because
     // there is no menu and no multiplayer implemented yet
 
-    const expectedObject: Game = { players: [mockPlayer], cards: [] };
+    const expectedObject: Game = mockGame;
     expect(gameReducer(undefined, { type: "" })).toEqual(expectedObject);
   });
 
@@ -23,7 +30,7 @@ describe("Game feature", () => {
     const cardPairs = generateCardPairs(1);
 
     // game mock
-    const game: Game = { players: [mockPlayer], cards: [] };
+    const game: Game = mockGame;
 
     // expect(gameReducer(game, cardsInit(cardPairs))).toEqual();
   });
@@ -37,7 +44,11 @@ describe("Game feature", () => {
     );
 
     // game mock
-    const game: Game = { players: [mockPlayer], cards: cardPairs };
+    const game: Game = {
+      players: [mockPlayer],
+      cards: cardPairs,
+      initialPairs: 2,
+    };
 
     expect(gameReducer(game, cardReveal({ id: card1.id }))).toEqual({
       ...game,
@@ -56,7 +67,11 @@ describe("Game feature", () => {
     }));
 
     // game mock
-    const game: Game = { players: [mockPlayer], cards: revealedPair };
+    const game: Game = {
+      players: [mockPlayer],
+      cards: revealedPair,
+      initialPairs: 2,
+    };
 
     expect(gameReducer(game, cardsHide())).toEqual({
       ...game,
@@ -69,14 +84,18 @@ describe("Game feature", () => {
     const player = mockPlayer;
     const cardPairs = generateCardPairs(1);
 
-    const game: Game = { players: [player], cards: cardPairs };
+    const game: Game = { ...mockGame, players: [player], cards: cardPairs };
 
     // expectation
     const expectedCards = cardPairs.map((card) => ({
       ...card,
       playerId: player.id,
     }));
-    const expectedGame: Game = { players: [player], cards: expectedCards };
+    const expectedGame: Game = {
+      ...mockGame,
+      players: [player],
+      cards: expectedCards,
+    };
 
     // nachdem cardAssign durchgeführt wurde sollen alle aufgedeckten karten dem benutzer zugewiesen sein
     expect(
