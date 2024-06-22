@@ -20,10 +20,10 @@ const initialGameState: Game = {
   ],
 };
 
- const gameReducer = createReducer(initialGameState, (builder) => {
+const gameReducer = createReducer(initialGameState, (builder) => {
   builder.addCase(cardReveal, (state, action) => {
     const cards = state.cards.map((card) =>
-      action.payload.id === card.id ? { ...card, revealed: true } : card
+      action.payload.id === card.id ? { ...card, revealed: true } : card,
     );
 
     return { cards, players: state.players };
@@ -32,23 +32,24 @@ const initialGameState: Game = {
     // all cards which are not assigned to player already and
     // which are revealed true shall switch state to false
     const cards = state.cards.map((card) => ({ ...card, revealed: false }));
-    return { cards, players: state.players };
+    return { ...state, cards };
   });
+  // initialize the deck
   builder.addCase(cardsInit, (state) => {
     const items = 4;
     const cards = generateCardPairs(Math.pow(items, 2) / 2);
     randomArrayShuffle(cards);
-    return { cards, players: state.players };
+    return { ...state, cards };
   });
   builder.addCase(cardAssign, (state, action) => {
     const { playerId, cardIds } = action.payload;
     const newCardState = state.cards.map((card) =>
       cardIds.includes(card.id)
         ? { ...card, playerId: playerId, revealed: false }
-        : card
+        : card,
     );
-    return { cards: newCardState, players: state.players };
+    return { ...state, cards: newCardState };
   });
 });
 
-export default gameReducer
+export default gameReducer;

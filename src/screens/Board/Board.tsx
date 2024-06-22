@@ -5,20 +5,21 @@ import {
   cardReveal,
   cardsHide,
   cardsInit,
-  cardAssign
+  cardAssign,
 } from "../../features/game/gameActions";
 import { RootState } from "../../store";
 import { Player } from "../../domain/Player";
 import { CardGrid, GridTile } from "./Grid";
 import { CardContainer, CardFront, CardBack, CardImage } from "./Card";
 
+//
 const DEFAULT_TIMEOUT = 1200;
 
 const Board: FC = () => {
   const dispatch = useDispatch();
   const cards = useSelector<RootState, Card[]>((state) => state.game.cards);
   const players = useSelector<RootState, Player[]>(
-    (state) => state.game.players
+    (state) => state.game.players,
   );
   const player1 = players[0];
   const items = 4;
@@ -41,9 +42,9 @@ const Board: FC = () => {
               cardAssign({
                 playerId: player1.id,
                 cardIds: [revealedCards[0].id, revealedCards[1].id],
-              })
+              }),
             ),
-          DEFAULT_TIMEOUT
+          DEFAULT_TIMEOUT,
         );
       } else {
         // if icons are not the same, hide all cards -- dispatch(cardsHide)

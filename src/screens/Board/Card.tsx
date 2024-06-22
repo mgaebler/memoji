@@ -45,7 +45,7 @@ export const CardBack = styled(CardBase)({
   backgroundSize: 16,
 });
 
-export const CardImage: FC<{children: ReactNode}> = ({ children }) => (
+export const CardImage: FC<{ children: ReactNode }> = ({ children }) => (
   <svg width="100%" height="100%" viewBox="0 0 16 16">
     <text
       x={8}
