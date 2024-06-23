@@ -2,7 +2,7 @@ import { Card } from "./Card";
 import { Player } from "./Player";
 
 export interface Game {
-  numberOfCards: number;
+  cardMultiplier: number;
   cards: Card[];
   players: Player[];
 }

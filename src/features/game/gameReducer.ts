@@ -7,12 +7,13 @@ import {
   cardsHide,
   cardsInit,
   cardAssign,
-  setNumberOfCards,
+  setCardMultiplier,
 } from "./gameActions";
+import { calculateNumberOfCards } from "./calculateNumberOfCards";
 
 const initialGameState: Game = {
   // TODO: currently it is only possible to use an initial set option of 4, but this should be an arbritary number between 1 and 10
-  numberOfCards: 4,
+  cardMultiplier: 4,
   cards: [
     // { id: "asdlfasdkfja", icon: "😀", revealed: false },
     // { id: "asdfasdfasdfasdf", icon: "🤣", revealed: false },
@@ -46,8 +47,9 @@ const gameReducer = createReducer(initialGameState, (builder) => {
   });
   // initialize the deck
   builder.addCase(cardsInit, (state) => {
-    const items = state.numberOfCards;
-    const cards = generateCardPairs(Math.pow(items, 2) / 2);
+    const multiplier = state.cardMultiplier;
+    const cardsTotal = calculateNumberOfCards(multiplier);
+    const cards = generateCardPairs(cardsTotal / 2);
     randomArrayShuffle(cards);
     state.cards = cards;
     return state;
@@ -64,9 +66,9 @@ const gameReducer = createReducer(initialGameState, (builder) => {
   });
 
   // control the number of cards
-  builder.addCase(setNumberOfCards, (state, action) => {
+  builder.addCase(setCardMultiplier, (state, action) => {
     const { numberOfCards } = action.payload;
-    state.numberOfCards = numberOfCards;
+    state.cardMultiplier = numberOfCards;
     return state;
   });
 });

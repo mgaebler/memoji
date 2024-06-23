@@ -1,28 +1,25 @@
 import { FC, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Card } from "../../domain/Card";
+
 import {
   cardReveal,
   cardsHide,
   cardsInit,
   cardAssign,
 } from "../../features/game/gameActions";
-import { RootState } from "../../store";
-import { Player } from "../../domain/Player";
-import { CardGrid, GridTile } from "./Grid";
-import { CardContainer, CardFront, CardBack, CardImage } from "./Card";
 
-//
+import { CardGrid, GridTile } from "./CardGrid";
+import { CardContainer, CardFront, CardBack, CardImage } from "./Card";
+import { useAppDispatch, useAppSelector } from "../../hooks";
+
 const DEFAULT_TIMEOUT = 1200;
 
 const Board: FC = () => {
-  const dispatch = useDispatch();
-  const cards = useSelector<RootState, Card[]>((state) => state.game.cards);
-  const players = useSelector<RootState, Player[]>(
-    (state) => state.game.players,
-  );
+  const dispatch = useAppDispatch();
+
+  const cards = useAppSelector((state) => state.game.cards);
+  const players = useAppSelector((state) => state.game.players);
+  const verticalItemsNum = Math.sqrt(cards.length);
   const player1 = players[0];
-  const items = 4;
   useEffect(() => {
     dispatch(cardsInit());
   }, [dispatch]);
@@ -53,15 +50,6 @@ const Board: FC = () => {
     }
   }, [revealedCards, dispatch, player1]);
 
-  useEffect(() => {
-    if (assignedCards.length === cards.length) {
-      const p = window.confirm("New Game?");
-      if (p) {
-        dispatch(cardsInit());
-      }
-    }
-  }, [cards, assignedCards, dispatch]);
-
   const handleReveal = (cardId: string) => {
     dispatch(cardReveal({ id: cardId }));
   };
@@ -69,7 +57,7 @@ const Board: FC = () => {
   return (
     <div>
       {/* <button onClick={() => dispatch(cardsHide())}>Hide</button> */}
-      <CardGrid items={items}>
+      <CardGrid items={verticalItemsNum}>
         {cards.map((card) => {
           return (
             <GridTile key={card.id}>

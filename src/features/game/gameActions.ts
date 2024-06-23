@@ -20,6 +20,6 @@ export const removePlayer = createAction<{ id: string }>("game/REMOVE_PLAYER");
 /*
 set options
 */
-export const setNumberOfCards = createAction<{ numberOfCards: number }>(
+export const setCardMultiplier = createAction<{ numberOfCards: number }>(
   "game/SET_NUMBER_OF_CARDS",
 );
