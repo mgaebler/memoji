@@ -32,11 +32,13 @@ const CardBase = styled.div({
   boxShadow: "1px 1px 5px",
 });
 
+// front side of the card
 export const CardFront = styled(CardBase)({
   backgroundColor: "#f5f5f5",
   transform: "rotateY(180deg)",
 });
 
+// back side of the card
 export const CardBack = styled(CardBase)({
   backgroundColor: "#bbdefb",
   backgroundImage: `url(${IconDiamond})`,

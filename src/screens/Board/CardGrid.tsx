@@ -4,28 +4,32 @@ export type ICardGrid = {
   items: number;
 };
 
+function getCardSize(items: number) {
+  const cardWidthMultiplier = 0.75;
+  const widthRounded = Math.round((100 / items) * cardWidthMultiplier);
+  console.log(widthRounded);
+  return widthRounded;
+}
+
 export const CardGrid = styled.div<ICardGrid>(({ items }) => ({
   display: "grid",
-  height: "80vh",
-  width: "80vh",
-  // alignItems: "center",
+  height: "100%",
   justifyContent: "center",
   alignContent: "center",
-  // columnGap: "1vh",
+  gap: "1vh",
   // rowGap: "1vh",
   // make sure the cards fit in every orientation
   "@media screen and (orientation:landscape)": {
-    gridTemplateColumns: `${100 / items}vh `.repeat(items),
-    gridTemplateRows: `${100 / items}vh `.repeat(items),
+    gridTemplateColumns: `repeat(${items}, ${getCardSize(items)}vh)`,
+    gridTemplateRows: `repeat(${items}, ${getCardSize(items)}vh)`,
   },
   "@media screen and (orientation:portrait)": {
-    gridTemplateColumns: `${100 / items}vw `.repeat(items),
-    gridTemplateRows: `${100 / items}vw `.repeat(items),
+    gridTemplateColumns: `repeat(${items}, ${getCardSize(items)}vw)`,
+    gridTemplateRows: `repeat(${items}, ${getCardSize(items)}vw)`,
   },
 }));
 
 export const GridTile = styled.div({
   // outline: "thin dashed red",
-  // padding: "1vh",
-  // perspective: "600px",
+  perspective: "600px",
 });

@@ -55,29 +55,26 @@ const Board: FC = () => {
   };
 
   return (
-    <div>
-      {/* <button onClick={() => dispatch(cardsHide())}>Hide</button> */}
-      <CardGrid items={verticalItemsNum}>
-        {cards.map((card) => {
-          return (
-            <GridTile key={card.id}>
-              <CardContainer
-                flipped={card.revealed || Boolean(card.playerId)}
-                onClick={() => {
-                  // prevent click if two cards are already revealed
-                  if (revealedCards.length < 2) handleReveal(card.id);
-                }}
-              >
-                <CardFront>
-                  <CardImage>{card.icon}</CardImage>
-                </CardFront>
-                <CardBack />
-              </CardContainer>
-            </GridTile>
-          );
-        })}
-      </CardGrid>
-    </div>
+    <CardGrid items={verticalItemsNum}>
+      {cards.map((card) => {
+        return (
+          <GridTile key={card.id}>
+            <CardContainer
+              flipped={card.revealed || Boolean(card.playerId)}
+              onClick={() => {
+                // prevent click if two cards are already revealed
+                if (revealedCards.length < 2) handleReveal(card.id);
+              }}
+            >
+              <CardFront>
+                <CardImage>{card.icon}</CardImage>
+              </CardFront>
+              <CardBack />
+            </CardContainer>
+          </GridTile>
+        );
+      })}
+    </CardGrid>
   );
 };
 
