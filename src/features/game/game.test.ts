@@ -11,7 +11,7 @@ const mockPlayer: Player = {
 };
 
 const mockGame: Game = {
-  numberOfCards: 2,
+  cardMultiplier: 2,
   players: [mockPlayer],
   cards: [],
 };
@@ -47,7 +47,7 @@ describe("Game feature", () => {
     const game: Game = {
       players: [mockPlayer],
       cards: cardPairs,
-      numberOfCards: 2,
+      cardMultiplier: 2,
     };
 
     expect(gameReducer(game, cardReveal({ id: card1.id }))).toEqual({
@@ -70,7 +70,7 @@ describe("Game feature", () => {
     const game: Game = {
       players: [mockPlayer],
       cards: revealedPair,
-      numberOfCards: 2,
+      cardMultiplier: 2,
     };
 
     expect(gameReducer(game, cardsHide())).toEqual({
