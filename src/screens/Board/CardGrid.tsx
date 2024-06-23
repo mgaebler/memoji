@@ -6,8 +6,8 @@ export type ICardGrid = {
 
 export const CardGrid = styled.div<ICardGrid>(({ items }) => ({
   display: "grid",
-  height: "100vh",
-  width: "100vw",
+  height: "80vh",
+  width: "80vh",
   // alignItems: "center",
   justifyContent: "center",
   alignContent: "center",
@@ -26,6 +26,6 @@ export const CardGrid = styled.div<ICardGrid>(({ items }) => ({
 
 export const GridTile = styled.div({
   // outline: "thin dashed red",
-  padding: "1vh",
-  perspective: "600px",
+  // padding: "1vh",
+  // perspective: "600px",
 });
