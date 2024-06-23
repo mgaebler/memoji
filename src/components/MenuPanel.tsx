@@ -3,23 +3,19 @@ import { useAppDispatch, useAppSelector } from "../hooks";
 import { PanelBody } from "../lib/Panel/PanelBody";
 import { PanelItem } from "../lib/Panel/PanelItem";
 import { calculateNumberOfCards } from "../features/game/calculateNumberOfCards";
+import { PlayButton } from "./PlayButton";
 
 export type InputChangeEvent = React.ChangeEvent<HTMLInputElement>;
 
-export const Menu = () => {
+export const MenuPanel = () => {
   const dispatch = useAppDispatch();
   const game = useAppSelector((state) => state.game);
   const playerNum = game.players.length;
   const cardsNumber = game.cardMultiplier;
   const cardsTotal = calculateNumberOfCards(cardsNumber);
 
-  function initGame() {
-    dispatch(cardsInit());
-  }
-
   function changeGameType(e: InputChangeEvent) {
     const value = e.target.valueAsNumber;
-    console.log(value);
     dispatch(setCardMultiplier({ numberOfCards: value }));
     dispatch(cardsInit());
   }
@@ -34,12 +30,13 @@ export const Menu = () => {
           value={cardsNumber}
           min={2}
           max={10}
+          step={2}
           onChange={changeGameType}
         />
       </PanelItem>
       <PanelItem>Cards: {cardsTotal}</PanelItem>
       <PanelItem>
-        <button onClick={initGame}>Start</button>
+        <PlayButton />
       </PanelItem>
     </PanelBody>
   );

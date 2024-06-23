@@ -3,12 +3,13 @@ import Board from "./screens/Board/Board";
 import store from "./store";
 import "./reset.css";
 import { LayoutVertical2080 } from "./layouts/LayoutVertical2080";
-import { Menu } from "./components/Menu";
+import { MenuPanel } from "./components/MenuPanel";
+import { Panels } from "./components/Panels";
 
 function App() {
   return (
     <Provider store={store}>
-      <LayoutVertical2080 panel={<Menu />}>
+      <LayoutVertical2080 panel={<Panels />}>
         <Board />
       </LayoutVertical2080>
     </Provider>

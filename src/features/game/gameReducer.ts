@@ -8,25 +8,23 @@ import {
   cardsInit,
   cardAssign,
   setCardMultiplier,
+  setGameStateAction,
+  addPlayerAction,
+  removePlayerAction,
+  setCurrentPlayerAction,
+  nextPlayerAction,
 } from "./gameActions";
 import { calculateNumberOfCards } from "./calculateNumberOfCards";
+import { v4 as uuidv4 } from "uuid";
+
+// set 4 colors for possible players
+const playerColors: string[] = ["green", "red", "yellow", "blue"];
 
 const initialGameState: Game = {
-  // TODO: currently it is only possible to use an initial set option of 4, but this should be an arbritary number between 1 and 10
+  gameState: "idle",
   cardMultiplier: 4,
-  cards: [
-    // { id: "asdlfasdkfja", icon: "😀", revealed: false },
-    // { id: "asdfasdfasdfasdf", icon: "🤣", revealed: false },
-    // { id: "asdfasdf", icon: "😉", revealed: false },
-    // { id: "adfasdfasdf", icon: "🥰", revealed: false },
-  ],
-  players: [
-    {
-      id: "007",
-      color: "red",
-      score: 0,
-    },
-  ],
+  cards: [],
+  players: [],
 };
 
 const gameReducer = createReducer(initialGameState, (builder) => {
@@ -38,6 +36,7 @@ const gameReducer = createReducer(initialGameState, (builder) => {
     state.cards = cards;
     return state;
   });
+
   builder.addCase(cardsHide, (state) => {
     // all cards which are not assigned to player already and
     // which are revealed true shall switch state to false
@@ -45,6 +44,7 @@ const gameReducer = createReducer(initialGameState, (builder) => {
     state.cards = cards;
     return state;
   });
+
   // initialize the deck
   builder.addCase(cardsInit, (state) => {
     const multiplier = state.cardMultiplier;
@@ -54,6 +54,7 @@ const gameReducer = createReducer(initialGameState, (builder) => {
     state.cards = cards;
     return state;
   });
+
   builder.addCase(cardAssign, (state, action) => {
     const { playerId, cardIds } = action.payload;
     const newCardState = state.cards.map((card) =>
@@ -62,6 +63,20 @@ const gameReducer = createReducer(initialGameState, (builder) => {
         : card,
     );
     state.cards = newCardState;
+
+    // calculate player score
+    const playerTotalCards = newCardState.filter((card) => {
+      return card.playerId === playerId;
+    }).length;
+
+    const score = playerTotalCards > 0 ? playerTotalCards / 2 : 0;
+
+    // update the players score
+    const newPlayers = state.players.map((player) =>
+      playerId === player.id ? { ...player, score: score } : player,
+    );
+    state.players = newPlayers;
+
     return state;
   });
 
@@ -69,6 +84,52 @@ const gameReducer = createReducer(initialGameState, (builder) => {
   builder.addCase(setCardMultiplier, (state, action) => {
     const { numberOfCards } = action.payload;
     state.cardMultiplier = numberOfCards;
+    return state;
+  });
+
+  // control the game state
+  builder.addCase(setGameStateAction, (state, action) => {
+    const gameState = action.payload;
+    state.gameState = gameState;
+    return state;
+  });
+
+  // control the players
+  builder.addCase(addPlayerAction, (state, _action) => {
+    if (state.players.length < 4) {
+      const playerColor = playerColors[state.players.length];
+      state.players.push({
+        id: uuidv4(),
+        color: playerColor,
+        score: 0,
+      });
+      return state;
+    } else {
+      return state;
+      // TODO: throw error here
+    }
+  });
+
+  builder.addCase(removePlayerAction, (state, _action) => {
+    // pop the last player out if at least 2 players are left
+    state.players.pop();
+    return state;
+  });
+
+  builder.addCase(setCurrentPlayerAction, (state, action) => {
+    state.currentPlayerId = action.payload.id;
+    return state;
+  });
+
+  builder.addCase(nextPlayerAction, (state) => {
+    const currentIndex = state.players.findIndex(
+      (player) => player.id === state.currentPlayerId,
+    );
+    // get the next player in the list
+    const nextIndex =
+      currentIndex + 1 < state.players.length ? currentIndex + 1 : 0;
+    const newCurrentPlayerId = state.players[nextIndex].id;
+    state.currentPlayerId = newCurrentPlayerId;
     return state;
   });
 });

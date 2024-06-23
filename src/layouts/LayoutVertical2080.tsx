@@ -11,7 +11,8 @@ const Container = styled.div(() => ({
   height: "100vh",
   width: "100vw",
   display: "grid",
-  gridTemplateRows: "1fr 9fr",
+  gridTemplateRows: "auto 1fr",
+  overflow: "hidden",
 }));
 
 export const LayoutVertical2080: FC<Props> = ({ panel, children }) => {

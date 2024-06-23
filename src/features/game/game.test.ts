@@ -1,5 +1,5 @@
 import gameReducer from "./gameReducer";
-import { cardAssign, cardReveal, cardsHide, cardsInit } from "./gameActions";
+import { cardAssign, cardReveal, cardsHide } from "./gameActions";
 import { Game } from "../../domain/Game";
 import { generateCardPairs } from "../../functions/generateCards";
 import { Player } from "../../domain/Player";
@@ -14,6 +14,7 @@ const mockGame: Game = {
   cardMultiplier: 2,
   players: [mockPlayer],
   cards: [],
+  gameState: "idle",
 };
 
 describe("Game feature", () => {
@@ -45,9 +46,8 @@ describe("Game feature", () => {
 
     // game mock
     const game: Game = {
-      players: [mockPlayer],
+      ...mockGame,
       cards: cardPairs,
-      cardMultiplier: 2,
     };
 
     expect(gameReducer(game, cardReveal({ id: card1.id }))).toEqual({
@@ -68,9 +68,8 @@ describe("Game feature", () => {
 
     // game mock
     const game: Game = {
-      players: [mockPlayer],
+      ...mockGame,
       cards: revealedPair,
-      cardMultiplier: 2,
     };
 
     expect(gameReducer(game, cardsHide())).toEqual({

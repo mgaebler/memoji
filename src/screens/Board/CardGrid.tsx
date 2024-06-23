@@ -7,7 +7,6 @@ export type ICardGrid = {
 function getCardSize(items: number) {
   const cardWidthMultiplier = 0.75;
   const widthRounded = Math.round((100 / items) * cardWidthMultiplier);
-  console.log(widthRounded);
   return widthRounded;
 }
 

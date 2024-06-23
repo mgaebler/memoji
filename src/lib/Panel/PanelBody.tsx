@@ -5,5 +5,4 @@ export const PanelBody = styled.ul(() => ({
   width: "100%",
   justifyContent: "space-around",
   borderBottom: "1px solid #e8e8e8",
-  marginBottom: "2rem",
 }));
