@@ -48,10 +48,22 @@ const PlayerAddButton = () => {
   }
 
   return (
-    <div>
-      <button onClick={addPlayer}>Add Player</button>
+    <div style={{ display: "flex", gap: "0.5rem" }}>
+      <button
+        style={{ width: "4rem", height: "3.8rem", fontSize: "2rem" }}
+        onClick={removePlayer}
+      >
+        {" "}
+        -{" "}
+      </button>
+      <button
+        style={{ width: "4rem", height: "3.8rem", fontSize: "2rem" }}
+        onClick={addPlayer}
+      >
+        {" "}
+        +{" "}
+      </button>
       <br />
-      <button onClick={removePlayer}>Remove Player</button>
     </div>
   );
 };

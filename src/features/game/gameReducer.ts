@@ -19,7 +19,7 @@ import { calculateNumberOfCards } from "./calculateNumberOfCards";
 import { v4 as uuidv4 } from "uuid";
 
 // set 4 colors for possible players
-const playerColors: string[] = ["green", "red", "yellow", "blue"];
+const playerColors: string[] = ["#96ead7", "#f96161	", "#adcbe3", "#ffeead"];
 
 const initialGameState: Game = {
   gameState: "idle",

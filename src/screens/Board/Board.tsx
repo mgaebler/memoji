@@ -18,16 +18,40 @@ const Board: FC = () => {
   const dispatch = useAppDispatch();
 
   const game = useAppSelector((state) => state.game);
+  const theme = game.currentTheme;
   const cards = game.cards;
   const currentPlayerId = game.currentPlayerId;
   const verticalItemsNum = Math.sqrt(cards.length);
 
   useEffect(() => {
     // initialize but only to show the amount
-    // dispatch(cardsInit());
+    dispatch(cardsInit());
   }, []);
 
   const revealedCards = cards.filter((card) => card.revealed === true);
+
+  useEffect(() => {
+    // theme demo
+    // use only in idle mode
+    if (game.gameState !== "idle") return;
+    if (game.cards.length < 1) return;
+    // every card should be revealed after 500ms or so to show a demo of the current theme
+    let currentIndex = 0;
+    let timeout: ReturnType<typeof setTimeout>;
+    function revealCard() {
+      const cardId = cards[currentIndex].id;
+      dispatch(cardReveal({ id: cardId }));
+      currentIndex++;
+      if (currentIndex < cards.length) {
+        timeout = setTimeout(revealCard, 200);
+      } else if (currentIndex === cards.length) {
+        setTimeout(() => dispatch(cardsHide()), 1000);
+      }
+    }
+    revealCard();
+
+    return () => clearTimeout(timeout);
+  }, [theme]);
 
   useEffect(() => {
     if (!currentPlayerId) return;

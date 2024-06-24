@@ -3,7 +3,7 @@ import Board from "./screens/Board/Board";
 import store from "./store";
 import "./reset.css";
 import { LayoutVertical2080 } from "./layouts/LayoutVertical2080";
-import { MenuPanel } from "./components/MenuPanel/MenuPanel";
+
 import { Panels } from "./components/Panels";
 
 function App() {

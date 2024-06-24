@@ -4,7 +4,7 @@ import { PanelBody } from "../../lib/Panel/PanelBody";
 import { PanelItem } from "../../lib/Panel/PanelItem";
 import { calculateNumberOfCards } from "../../features/game/calculateNumberOfCards";
 import { PlayButton } from "../PlayButton";
-import { MenuCategorySelect } from "./MenuCategorySelect";
+import { MenuThemeSelect } from "./MenuThemeSelect";
 
 export type InputChangeEvent = React.ChangeEvent<HTMLInputElement>;
 
@@ -23,9 +23,9 @@ export const MenuPanel = () => {
 
   return (
     <PanelBody>
-      <PanelItem>Spieler: {playerNum}</PanelItem>
+      <PanelItem>Players: {playerNum}</PanelItem>
       <PanelItem>
-        <MenuCategorySelect />
+        <MenuThemeSelect />
       </PanelItem>
       <PanelItem>
         GameType:{" "}
