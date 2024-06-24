@@ -13,6 +13,7 @@ import {
   removePlayerAction,
   setCurrentPlayerAction,
   nextPlayerAction,
+  setThemeAction,
 } from "./gameActions";
 import { calculateNumberOfCards } from "./calculateNumberOfCards";
 import { v4 as uuidv4 } from "uuid";
@@ -25,6 +26,7 @@ const initialGameState: Game = {
   cardMultiplier: 4,
   cards: [],
   players: [],
+  currentTheme: "nature",
 };
 
 const gameReducer = createReducer(initialGameState, (builder) => {
@@ -49,7 +51,7 @@ const gameReducer = createReducer(initialGameState, (builder) => {
   builder.addCase(cardsInit, (state) => {
     const multiplier = state.cardMultiplier;
     const cardsTotal = calculateNumberOfCards(multiplier);
-    const cards = generateCardPairs(cardsTotal / 2);
+    const cards = generateCardPairs(cardsTotal / 2, state.currentTheme);
     randomArrayShuffle(cards);
     state.cards = cards;
     return state;
@@ -130,6 +132,11 @@ const gameReducer = createReducer(initialGameState, (builder) => {
       currentIndex + 1 < state.players.length ? currentIndex + 1 : 0;
     const newCurrentPlayerId = state.players[nextIndex].id;
     state.currentPlayerId = newCurrentPlayerId;
+    return state;
+  });
+
+  builder.addCase(setThemeAction, (state, action) => {
+    state.currentTheme = action.payload;
     return state;
   });
 });

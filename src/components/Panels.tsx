@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { MenuPanel } from "./MenuPanel";
+import { MenuPanel } from "./MenuPanel/MenuPanel";
 import { PlayerPanel } from "./PlayerPanel";
 
 const PanelsStyle = styled.div(() => ({

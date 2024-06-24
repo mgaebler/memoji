@@ -1475,3 +1475,31 @@ export const symbols = [
   "🕦",
   "🕧",
 ];
+
+export const emoticons = {
+  smilies: smileys,
+  people: people,
+  gestures: gestures,
+  clothing: clothing,
+  nature: animalsAndNature,
+  food: food,
+  sports: sports,
+  travel: travelAndPlaces,
+  objects: objects,
+  symbols: symbols,
+};
+
+export const emoticonCategories: Emoticon[] = [
+  "smilies",
+  "people",
+  "gestures",
+  "clothing",
+  "nature",
+  "food",
+  "sports",
+  "travel",
+  "objects",
+  "symbols",
+];
+
+export type Emoticon = keyof typeof emoticons;

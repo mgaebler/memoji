@@ -1,5 +1,6 @@
 import { createAction } from "@reduxjs/toolkit";
 import { GameState } from "../../domain/Game";
+import { Emoticon } from "../../assets/emoticons";
 
 // card actions
 export const cardsInit = createAction("game/CARDS_INIT");
@@ -32,3 +33,8 @@ setGameState
 export const setGameStateAction = createAction<GameState>(
   "game/SET_GAME_STATE",
 );
+
+/*
+set game theme
+*/
+export const setThemeAction = createAction<Emoticon>("game/SET_THEME");

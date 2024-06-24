@@ -15,6 +15,7 @@ const mockGame: Game = {
   players: [mockPlayer],
   cards: [],
   gameState: "idle",
+  currentTheme: "clothing",
 };
 
 describe("Game feature", () => {

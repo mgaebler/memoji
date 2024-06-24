@@ -1,9 +1,10 @@
-import { cardsInit, setCardMultiplier } from "../features/game/gameActions";
-import { useAppDispatch, useAppSelector } from "../hooks";
-import { PanelBody } from "../lib/Panel/PanelBody";
-import { PanelItem } from "../lib/Panel/PanelItem";
-import { calculateNumberOfCards } from "../features/game/calculateNumberOfCards";
-import { PlayButton } from "./PlayButton";
+import { cardsInit, setCardMultiplier } from "../../features/game/gameActions";
+import { useAppDispatch, useAppSelector } from "../../hooks";
+import { PanelBody } from "../../lib/Panel/PanelBody";
+import { PanelItem } from "../../lib/Panel/PanelItem";
+import { calculateNumberOfCards } from "../../features/game/calculateNumberOfCards";
+import { PlayButton } from "../PlayButton";
+import { MenuCategorySelect } from "./MenuCategorySelect";
 
 export type InputChangeEvent = React.ChangeEvent<HTMLInputElement>;
 
@@ -24,6 +25,9 @@ export const MenuPanel = () => {
     <PanelBody>
       <PanelItem>Spieler: {playerNum}</PanelItem>
       <PanelItem>
+        <MenuCategorySelect />
+      </PanelItem>
+      <PanelItem>
         GameType:{" "}
         <input
           type="number"
@@ -34,6 +38,7 @@ export const MenuPanel = () => {
           onChange={changeGameType}
         />
       </PanelItem>
+
       <PanelItem>Cards: {cardsTotal}</PanelItem>
       <PanelItem>
         <PlayButton />
