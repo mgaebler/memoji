@@ -31,7 +31,11 @@ export const PlayButton = () => {
     }
   }
   return (
-    <button onClick={setGameState} className="start-btn">
+    <button
+      style={{ width: "100%", fontSize: "2rem" }}
+      onClick={setGameState}
+      className="start-btn"
+    >
       {buttonText}
     </button>
   );
