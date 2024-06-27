@@ -1,6 +1,10 @@
 import styled from "styled-components";
 import { MenuPanel } from "./MenuPanel/MenuPanel";
 import { PlayerPanel } from "./PlayerPanel";
+import { useAppSelector } from "../hooks";
+import { PlayButton } from "./PlayButton";
+import { PanelBody } from "../lib/Panel/PanelBody";
+import { PanelItem } from "../lib/Panel/PanelItem";
 
 const PanelsStyle = styled.div(() => ({
   borderBottom: "1px solid #eaecef",
@@ -8,10 +12,26 @@ const PanelsStyle = styled.div(() => ({
 }));
 
 export const Panels = () => {
+  const gameState = useAppSelector((state) => state.game.gameState);
   return (
     <PanelsStyle>
-      <MenuPanel />
-      <PlayerPanel />
+      {gameState === "idle" && (
+        <>
+          <MenuPanel />
+          <PanelBody>
+            <PanelItem>
+              <PlayButton />
+            </PanelItem>
+          </PanelBody>
+        </>
+      )}
+
+      {gameState === "playing" && (
+        <>
+          <PlayerPanel />
+
+        </>
+      )}
     </PanelsStyle>
   );
 };

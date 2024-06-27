@@ -43,7 +43,7 @@ const Board: FC = () => {
       dispatch(cardReveal({ id: cardId }));
       currentIndex++;
       if (currentIndex < cards.length) {
-        timeout = setTimeout(revealCard, 200);
+        timeout = setTimeout(revealCard, 100);
       } else if (currentIndex === cards.length) {
         setTimeout(() => dispatch(cardsHide()), 1000);
       }

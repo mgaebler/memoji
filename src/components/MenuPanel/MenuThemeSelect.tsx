@@ -17,12 +17,18 @@ export function MenuThemeSelect() {
     dispatch(cardsInit());
   }
   return (
-    <select onChange={selectCategory} value={currentTheme}>
-      {categories.map((category) => (
-        <option key={category} value={category}>
-          {emoticons[category][0]} {category}
-        </option>
-      ))}
-    </select>
+    <>
+      <label htmlFor="theme-select">
+        Select Theme:
+      </label>
+      {' '}
+      <select id="theme-select" onChange={selectCategory} value={currentTheme}>
+        {categories.map((category) => (
+          <option key={category} value={category}>
+            {emoticons[category][0]} {category}
+          </option>
+        ))}
+      </select>
+    </>
   );
 }

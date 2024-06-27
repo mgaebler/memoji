@@ -3,7 +3,6 @@ import { useAppDispatch, useAppSelector } from "../../hooks";
 import { PanelBody } from "../../lib/Panel/PanelBody";
 import { PanelItem } from "../../lib/Panel/PanelItem";
 import { calculateNumberOfCards } from "../../features/game/calculateNumberOfCards";
-import { PlayButton } from "../PlayButton";
 import { MenuThemeSelect } from "./MenuThemeSelect";
 
 export type InputChangeEvent = React.ChangeEvent<HTMLInputElement>;
@@ -23,7 +22,7 @@ export const MenuPanel = () => {
 
   return (
     <PanelBody>
-      <PanelItem>Players: {playerNum}</PanelItem>
+      {/* <PanelItem>Players: {playerNum}</PanelItem> */}
       <PanelItem>
         <MenuThemeSelect />
       </PanelItem>
@@ -40,9 +39,6 @@ export const MenuPanel = () => {
       </PanelItem>
 
       <PanelItem>Cards: {cardsTotal}</PanelItem>
-      <PanelItem>
-        <PlayButton />
-      </PanelItem>
     </PanelBody>
   );
 };

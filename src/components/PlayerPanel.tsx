@@ -1,70 +1,20 @@
 import { Player } from "../domain/Player";
-import {
-  addPlayerAction,
-  cardsInit,
-  removePlayerAction,
-  setCardMultiplier,
-} from "../features/game/gameActions";
-import { useAppDispatch, useAppSelector } from "../hooks";
+
+import { useAppSelector } from "../hooks";
 import { PanelBody } from "../lib/Panel/PanelBody";
 import { PanelItem } from "../lib/Panel/PanelItem";
-import { useEffect } from "react";
 
 export type InputChangeEvent = React.ChangeEvent<HTMLInputElement>;
 
 export const PlayerPanel = () => {
-  const dispatch = useAppDispatch();
   const players = useAppSelector((state) => state.game.players);
-  const gameState = useAppSelector((state) => state.game.gameState);
-  const playersTotal = players.length;
-
-  useEffect(() => {
-    if (playersTotal === 0) {
-      dispatch(addPlayerAction());
-    }
-  }, [playersTotal]);
 
   return (
     <PanelBody style={{ justifyContent: "center" }}>
       {players.map((player, index) => (
         <PlayerItem key={index} player={player} />
       ))}
-      {playersTotal <= 4 && gameState === "idle" && (
-        <PanelItem>
-          <PlayerAddButton />
-        </PanelItem>
-      )}
     </PanelBody>
-  );
-};
-
-const PlayerAddButton = () => {
-  const dispatch = useAppDispatch();
-  function addPlayer() {
-    dispatch(addPlayerAction());
-  }
-  function removePlayer() {
-    dispatch(removePlayerAction());
-  }
-
-  return (
-    <div style={{ display: "flex", gap: "0.5rem" }}>
-      <button
-        style={{ width: "4rem", height: "3.8rem", fontSize: "2rem" }}
-        onClick={removePlayer}
-      >
-        {" "}
-        -{" "}
-      </button>
-      <button
-        style={{ width: "4rem", height: "3.8rem", fontSize: "2rem" }}
-        onClick={addPlayer}
-      >
-        {" "}
-        +{" "}
-      </button>
-      <br />
-    </div>
   );
 };
 
@@ -72,7 +22,7 @@ const PlayerItem = ({ player }: { player: Player }) => {
   const active = useAppSelector(
     (state) => state.game.currentPlayerId === player.id,
   );
-  // const activeStyle = { boxShadow: "2px 2px 3px #999" };
+
   const activeIcon = "🙋";
   return (
     <PanelItem
