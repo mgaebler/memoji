@@ -2,7 +2,6 @@ import { cardsInit, setCardMultiplier } from "../../features/game/gameActions";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { PanelBody } from "../../lib/Panel/PanelBody";
 import { PanelItem } from "../../lib/Panel/PanelItem";
-import { calculateNumberOfCards } from "../../features/game/calculateNumberOfCards";
 import { MenuThemeSelect } from "./MenuThemeSelect";
 
 export type InputChangeEvent = React.ChangeEvent<HTMLInputElement>;
@@ -10,9 +9,7 @@ export type InputChangeEvent = React.ChangeEvent<HTMLInputElement>;
 export const MenuPanel = () => {
   const dispatch = useAppDispatch();
   const game = useAppSelector((state) => state.game);
-  const playerNum = game.players.length;
   const cardsNumber = game.cardMultiplier;
-  const cardsTotal = calculateNumberOfCards(cardsNumber);
 
   function changeGameType(e: InputChangeEvent) {
     const value = e.target.valueAsNumber;
@@ -22,7 +19,6 @@ export const MenuPanel = () => {
 
   return (
     <PanelBody>
-      {/* <PanelItem>Players: {playerNum}</PanelItem> */}
       <PanelItem>
         <MenuThemeSelect />
       </PanelItem>
@@ -38,7 +34,7 @@ export const MenuPanel = () => {
         />
       </PanelItem>
 
-      <PanelItem>Cards: {cardsTotal}</PanelItem>
+      {/* <PanelItem>Cards: {cardsTotal}</PanelItem> */}
     </PanelBody>
   );
 };

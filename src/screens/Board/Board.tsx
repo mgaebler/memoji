@@ -26,6 +26,7 @@ const Board: FC = () => {
   useEffect(() => {
     // initialize but only to show the amount
     dispatch(cardsInit());
+    // eslint-disable-next-line
   }, []);
 
   const revealedCards = cards.filter((card) => card.revealed === true);
@@ -51,6 +52,7 @@ const Board: FC = () => {
     revealCard();
 
     return () => clearTimeout(timeout);
+    // eslint-disable-next-line
   }, [theme]);
 
   useEffect(() => {
