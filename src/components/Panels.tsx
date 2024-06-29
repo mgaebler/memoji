@@ -5,6 +5,7 @@ import { useAppSelector } from "../hooks";
 import { PlayButton } from "./PlayButton";
 import { PanelBody } from "../lib/Panel/PanelBody";
 import { PanelItem } from "../lib/Panel/PanelItem";
+import Logo from "./Logo";
 
 const PanelsStyle = styled.div(() => ({
   borderBottom: "1px solid #eaecef",
@@ -17,6 +18,9 @@ export const Panels = () => {
     <PanelsStyle>
       {gameState === "idle" && (
         <>
+          <div style={{ textAlign: 'center', fontSize: '3rem' }}>
+            <Logo />
+          </div>
           <MenuPanel />
           <PanelBody>
             <PanelItem>
