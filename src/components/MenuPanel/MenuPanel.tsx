@@ -38,7 +38,7 @@ export const MenuPanel = () => {
         />
       </PanelItem>
 
-      <PanelItem>Cards: {cardsTotal}</PanelItem>
+      {/* <PanelItem>Cards: {cardsTotal}</PanelItem> */}
     </PanelBody>
   );
 };
