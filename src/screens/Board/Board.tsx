@@ -6,6 +6,7 @@ import {
   cardsInit,
   cardAssign,
   nextPlayerAction,
+  setGameStateAction,
 } from "../../features/game/gameActions";
 
 import { CardGrid, GridTile } from "./CardGrid";
@@ -23,13 +24,22 @@ const Board: FC = () => {
   const currentPlayerId = game.currentPlayerId;
   const verticalItemsNum = Math.sqrt(cards.length);
 
+  const revealedCards = cards.filter((card) => card.revealed === true);
+  // check if all cards have a player id
+  const allCardsAssigned = cards.every(card => Boolean(card.playerId))
+
   useEffect(() => {
     // initialize but only to show the amount
     dispatch(cardsInit());
     // eslint-disable-next-line
   }, []);
 
-  const revealedCards = cards.filter((card) => card.revealed === true);
+  useEffect(() => {
+    if (allCardsAssigned) {
+      dispatch(setGameStateAction('finished'))
+    }
+    // eslint-disable-next-line
+  }, [allCardsAssigned])
 
   useEffect(() => {
     // theme demo
