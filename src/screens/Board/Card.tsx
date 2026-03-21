@@ -1,6 +1,6 @@
 import { FC, ReactNode } from "react";
 import styled from "styled-components";
-import IconDiamond from "./assets/diamond.svg";
+import IconDiamond from "./assets/diamond.svg?url";
 
 type ICardContainer = {
   flipped: boolean;
