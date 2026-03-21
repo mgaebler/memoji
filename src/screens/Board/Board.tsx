@@ -96,12 +96,12 @@ const Board: FC = () => {
   };
 
   return (
-    <CardGrid items={verticalItemsNum}>
+    <CardGrid $items={verticalItemsNum}>
       {cards.map((card) => {
         return (
           <GridTile key={card.id}>
             <CardContainer
-              flipped={card.revealed || Boolean(card.playerId)}
+              $flipped={card.revealed || Boolean(card.playerId)}
               onClick={() => {
                 // prevent click if two cards are already revealed
                 if (revealedCards.length < 2) handleReveal(card.id);

@@ -3,7 +3,7 @@ import styled from "styled-components";
 import IconDiamond from "./assets/diamond.svg?url";
 
 type ICardContainer = {
-  flipped: boolean;
+  $flipped: boolean;
 };
 
 export const CardContainer = styled.div<ICardContainer>((props) => ({
@@ -16,7 +16,7 @@ export const CardContainer = styled.div<ICardContainer>((props) => ({
   position: "relative",
   transition: "transform 600ms",
   transformStyle: "preserve-3d",
-  transform: props.flipped ? "rotateY(180deg)" : "rotateY(0deg)",
+  transform: props.$flipped ? "rotateY(180deg)" : "rotateY(0deg)",
 }));
 
 const CardBase = styled.div({

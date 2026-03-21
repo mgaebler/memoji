@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export type ICardGrid = {
-  items: number;
+  $items: number;
 };
 
 function getCardSize(items: number) {
@@ -10,7 +10,7 @@ function getCardSize(items: number) {
   return widthRounded;
 }
 
-export const CardGrid = styled.div<ICardGrid>(({ items }) => ({
+export const CardGrid = styled.div<ICardGrid>(({ $items }) => ({
   display: "grid",
   height: "100%",
   justifyContent: "center",
@@ -19,12 +19,12 @@ export const CardGrid = styled.div<ICardGrid>(({ items }) => ({
   // rowGap: "1vh",
   // make sure the cards fit in every orientation
   "@media screen and (orientation:landscape)": {
-    gridTemplateColumns: `repeat(${items}, ${getCardSize(items)}vh)`,
-    gridTemplateRows: `repeat(${items}, ${getCardSize(items)}vh)`,
+    gridTemplateColumns: `repeat(${$items}, ${getCardSize($items)}vh)`,
+    gridTemplateRows: `repeat(${$items}, ${getCardSize($items)}vh)`,
   },
   "@media screen and (orientation:portrait)": {
-    gridTemplateColumns: `repeat(${items}, ${getCardSize(items)}vw)`,
-    gridTemplateRows: `repeat(${items}, ${getCardSize(items)}vw)`,
+    gridTemplateColumns: `repeat(${$items}, ${getCardSize($items)}vw)`,
+    gridTemplateRows: `repeat(${$items}, ${getCardSize($items)}vw)`,
   },
 }));
 
