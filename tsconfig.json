@@ -16,7 +16,8 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "types": ["vitest/globals"]
   },
   "include": ["src", "vite.config.ts"],
   "exclude": ["src/**/*.test.ts", "src/**/*.test.tsx"]

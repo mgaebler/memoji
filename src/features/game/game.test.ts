@@ -11,11 +11,11 @@ const mockPlayer: Player = {
 };
 
 const mockGame: Game = {
-  cardMultiplier: 2,
-  players: [mockPlayer],
+  cardMultiplier: 4,
+  players: [],
   cards: [],
   gameState: "idle",
-  currentTheme: "clothing",
+  currentTheme: "nature",
 };
 
 describe("Game feature", () => {
@@ -86,14 +86,15 @@ describe("Game feature", () => {
 
     const game: Game = { ...mockGame, players: [player], cards: cardPairs };
 
-    // expectation
+    // expectation: cards get assigned to player and revealed is set to false
     const expectedCards = cardPairs.map((card) => ({
       ...card,
       playerId: player.id,
+      revealed: false,
     }));
     const expectedGame: Game = {
       ...mockGame,
-      players: [player],
+      players: [{ ...player, score: 1 }],
       cards: expectedCards,
     };
 
