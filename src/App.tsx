@@ -1,6 +1,6 @@
 import { Provider } from "react-redux";
 import store from "./store";
-import 'typeface-roboto'
+import "@fontsource/roboto"
 import "./styles/reset.css";
 import "./styles/game.css";
 
