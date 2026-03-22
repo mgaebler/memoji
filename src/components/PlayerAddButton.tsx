@@ -5,10 +5,13 @@ import {
 } from "../features/game/gameActions";
 import { useAppDispatch, useAppSelector } from "../hooks";
 
+const MAX_PLAYERS = 4;
+
 export const PlayerAddButton = () => {
   const dispatch = useAppDispatch();
   const players = useAppSelector((state) => state.game.players);
   const playersTotal = players.length;
+
   function addPlayer() {
     dispatch(addPlayerAction());
   }
@@ -26,18 +29,17 @@ export const PlayerAddButton = () => {
       <button
         style={{ width: "4rem", height: "3.8rem", fontSize: "2rem" }}
         onClick={removePlayer}
+        disabled={playersTotal <= 1}
       >
-        {" "}
-        -{" "}
+        -
       </button>
       <button
         style={{ width: "4rem", height: "3.8rem", fontSize: "2rem" }}
         onClick={addPlayer}
+        disabled={playersTotal >= MAX_PLAYERS}
       >
-        {" "}
-        +{" "}
+        +
       </button>
-      <br />
     </div>
   );
 };

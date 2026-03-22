@@ -11,8 +11,8 @@ export const PlayerPanel = () => {
 
   return (
     <PanelBody style={{ justifyContent: "center" }}>
-      {players.map((player, index) => (
-        <PlayerItem key={index} player={player} />
+      {players.map((player) => (
+        <PlayerItem key={player.id} player={player} />
       ))}
     </PanelBody>
   );
