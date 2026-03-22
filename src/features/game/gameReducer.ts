@@ -19,7 +19,7 @@ import { calculateNumberOfCards } from "./calculateNumberOfCards";
 import { v4 as uuidv4 } from "uuid";
 
 // set 4 colors for possible players
-const playerColors: string[] = ["#96ead7", "#f96161	", "#adcbe3", "#ffeead"];
+const playerColors: string[] = ["#96ead7", "#f96161", "#adcbe3", "#ffeead"];
 
 const initialGameState: Game = {
   gameState: "idle",
@@ -97,6 +97,12 @@ const gameSlice = createSlice({
     builder.addCase(setGameStateAction, (state, action) => {
       const gameState = action.payload;
       state.gameState = gameState;
+      if (gameState === "idle") {
+        state.players = state.players.map((player) => ({
+          ...player,
+          score: 0,
+        }));
+      }
       return state;
     });
 
@@ -116,9 +122,10 @@ const gameSlice = createSlice({
       }
     });
 
-    builder.addCase(removePlayerAction, (state, _action) => {
-      // pop the last player out if at least 2 players are left
-      state.players.pop();
+    builder.addCase(removePlayerAction, (state) => {
+      if (state.players.length > 1) {
+        state.players.pop();
+      }
       return state;
     });
 
@@ -128,14 +135,14 @@ const gameSlice = createSlice({
     });
 
     builder.addCase(nextPlayerAction, (state) => {
+      if (state.players.length === 0) return state;
       const currentIndex = state.players.findIndex(
         (player) => player.id === state.currentPlayerId,
       );
-      // get the next player in the list
+      const safeIndex = currentIndex === -1 ? 0 : currentIndex;
       const nextIndex =
-        currentIndex + 1 < state.players.length ? currentIndex + 1 : 0;
-      const newCurrentPlayerId = state.players[nextIndex].id;
-      state.currentPlayerId = newCurrentPlayerId;
+        safeIndex + 1 < state.players.length ? safeIndex + 1 : 0;
+      state.currentPlayerId = state.players[nextIndex].id;
       return state;
     });
 

@@ -1,5 +1,12 @@
 import gameReducer from "./gameReducer";
-import { cardAssign, cardReveal, cardsHide } from "./gameActions";
+import {
+  cardAssign,
+  cardReveal,
+  cardsHide,
+  removePlayerAction,
+  nextPlayerAction,
+  setGameStateAction,
+} from "./gameActions";
 import { Game } from "../../domain/Game";
 import { generateCardPairs } from "../../functions/generateCards";
 import { Player } from "../../domain/Player";
@@ -108,6 +115,42 @@ describe("Game feature", () => {
         }),
       ),
     ).toEqual(expectedGame);
+  });
+  it("should handle nextPlayerAction when currentPlayerId is invalid", () => {
+    const players: Player[] = [
+      { id: "1", color: "#96ead7", score: 0 },
+      { id: "2", color: "#f96161", score: 0 },
+    ];
+    const game: Game = {
+      ...mockGame,
+      players,
+      currentPlayerId: "nonexistent",
+    };
+
+    const result = gameReducer(game, nextPlayerAction());
+    // safeIndex defaults to 0, nextIndex advances to 1
+    expect(result.currentPlayerId).toBe("2");
+  });
+
+  it("should reset player scores when game returns to idle", () => {
+    const players: Player[] = [
+      { id: "1", color: "#96ead7", score: 5 },
+      { id: "2", color: "#f96161", score: 3 },
+    ];
+    const game: Game = { ...mockGame, players, gameState: "finished" };
+
+    const afterIdle = gameReducer(game, setGameStateAction("idle"));
+    expect(afterIdle.players[0].score).toBe(0);
+    expect(afterIdle.players[1].score).toBe(0);
+  });
+
+  it("should not remove the last player", () => {
+    const player: Player = { id: "1", color: "#96ead7", score: 0 };
+    const game: Game = { ...mockGame, players: [player] };
+
+    const result = gameReducer(game, removePlayerAction());
+    expect(result.players).toHaveLength(1);
+    expect(result.players[0].id).toBe("1");
   });
 });
 
