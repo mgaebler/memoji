@@ -20,6 +20,11 @@ export const Panels = () => {
         <>
           <div style={{ textAlign: 'center', fontSize: '3rem' }}>
             <Logo />
+            <div style={{ fontSize: '0.75rem', color: '#999', marginTop: -4 }}>
+              <a href="https://mgaebler.me" target="_blank" rel="noopener noreferrer" style={{ color: '#999', textDecoration: 'none' }}>
+                mgaebler.me
+              </a>
+            </div>
           </div>
           <MenuPanel />
           <PanelBody>
