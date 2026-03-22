@@ -3,14 +3,34 @@ import { MenuPanel } from "./MenuPanel/MenuPanel";
 import { PlayerPanel } from "./PlayerPanel";
 import { useAppSelector } from "../hooks";
 import { PlayButton } from "./PlayButton";
-import { PanelBody } from "../lib/Panel/PanelBody";
-import { PanelItem } from "../lib/Panel/PanelItem";
 import Logo from "./Logo";
 
 const PanelsStyle = styled.div(() => ({
   borderBottom: "1px solid #eaecef",
   boxShadow: "0 2px 4px rgba(0, 0, 0, .1)",
 }));
+
+const Toolbar = styled.div({
+  display: "flex",
+  justifyContent: "center",
+  padding: "0.75rem 1rem",
+});
+
+const ToolbarInner = styled.div({
+  display: "inline-flex",
+  alignItems: "stretch",
+  background: "white",
+  borderRadius: 14,
+  padding: 6,
+  gap: 4,
+  boxShadow: "0 1px 4px rgba(0, 0, 0, 0.08)",
+});
+
+const Divider = styled.div({
+  width: 1,
+  background: "#e8e8e8",
+  margin: "4px 0",
+});
 
 export const Panels = () => {
   const gameState = useAppSelector((state) => state.game.gameState);
@@ -26,19 +46,19 @@ export const Panels = () => {
               </a>
             </div>
           </div>
-          <MenuPanel />
-          <PanelBody>
-            <PanelItem>
+          <Toolbar>
+            <ToolbarInner>
+              <MenuPanel />
+              <Divider />
               <PlayButton />
-            </PanelItem>
-          </PanelBody>
+            </ToolbarInner>
+          </Toolbar>
         </>
       )}
 
       {gameState === "playing" && (
         <>
           <PlayerPanel />
-
         </>
       )}
     </PanelsStyle>
