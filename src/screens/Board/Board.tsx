@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef } from "react";
+import { FC, useEffect, useMemo, useRef } from "react";
 
 import {
   cardReveal,
@@ -24,11 +24,16 @@ const Board: FC = () => {
   const currentPlayerId = game.currentPlayerId;
   const verticalItemsNum = Math.sqrt(cards.length);
 
-  const revealedCards = cards.filter((card) => card.revealed === true);
+  const revealedCards = useMemo(
+    () => cards.filter((card) => card.revealed === true),
+    [cards],
+  );
   const allCardsAssigned =
     cards.length > 0 && cards.every((card) => Boolean(card.playerId));
 
   const matchTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const cardsRef = useRef(cards);
+  cardsRef.current = cards;
 
   // Initialize cards on mount
   useEffect(() => {
@@ -47,46 +52,51 @@ const Board: FC = () => {
     if (game.gameState !== "idle") return;
     if (game.cards.length < 1) return;
 
+    const currentCards = cardsRef.current;
     const timeouts: ReturnType<typeof setTimeout>[] = [];
     let currentIndex = 0;
 
-    function revealCard() {
-      const cardId = cards[currentIndex].id;
+    function revealNextCard() {
+      const cardId = currentCards[currentIndex].id;
       dispatch(cardReveal({ id: cardId }));
       currentIndex++;
-      if (currentIndex < cards.length) {
-        const t = setTimeout(revealCard, 100);
+      if (currentIndex < currentCards.length) {
+        const t = setTimeout(revealNextCard, 100);
         timeouts.push(t);
       } else {
         const t = setTimeout(() => dispatch(cardsHide()), 1000);
         timeouts.push(t);
       }
     }
-    revealCard();
+    revealNextCard();
 
     return () => {
       timeouts.forEach((t) => clearTimeout(t));
     };
-  }, [theme, game.gameState, game.cards.length, cards, dispatch]);
+  }, [theme, game.gameState, game.cards.length, dispatch]);
 
   // Match/mismatch logic with proper cleanup
+  const revealedCount = revealedCards.length;
   useEffect(() => {
     if (!currentPlayerId) return;
-    if (revealedCards.length !== 2) return;
+    if (revealedCount !== 2) return;
+
+    const revealed = cardsRef.current.filter((card) => card.revealed === true);
+    if (revealed.length !== 2) return;
 
     // Clear any pending timeout from previous reveal
     if (matchTimeoutRef.current) {
       clearTimeout(matchTimeoutRef.current);
     }
 
-    const isMatch = revealedCards[0].icon === revealedCards[1].icon;
+    const isMatch = revealed[0].icon === revealed[1].icon;
 
     matchTimeoutRef.current = setTimeout(() => {
       if (isMatch) {
         dispatch(
           cardAssign({
             playerId: currentPlayerId,
-            cardIds: [revealedCards[0].id, revealedCards[1].id],
+            cardIds: [revealed[0].id, revealed[1].id],
           }),
         );
       } else {
@@ -102,7 +112,7 @@ const Board: FC = () => {
         matchTimeoutRef.current = null;
       }
     };
-  }, [revealedCards, dispatch, currentPlayerId]);
+  }, [revealedCount, dispatch, currentPlayerId]);
 
   const handleReveal = (cardId: string) => {
     dispatch(cardReveal({ id: cardId }));
