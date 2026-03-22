@@ -1,4 +1,4 @@
-import { FC, useEffect } from "react";
+import { FC, useEffect, useRef } from "react";
 
 import {
   cardReveal,
@@ -25,70 +25,83 @@ const Board: FC = () => {
   const verticalItemsNum = Math.sqrt(cards.length);
 
   const revealedCards = cards.filter((card) => card.revealed === true);
-  // check if all cards have a player id
-  const allCardsAssigned = cards.every(card => Boolean(card.playerId))
+  const allCardsAssigned =
+    cards.length > 0 && cards.every((card) => Boolean(card.playerId));
 
+  const matchTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Initialize cards on mount
   useEffect(() => {
-    // initialize but only to show the amount
     dispatch(cardsInit());
-    // eslint-disable-next-line
-  }, []);
+  }, [dispatch]);
 
+  // Check win condition
   useEffect(() => {
     if (allCardsAssigned) {
-      dispatch(setGameStateAction('finished'))
+      dispatch(setGameStateAction("finished"));
     }
-    // eslint-disable-next-line
-  }, [allCardsAssigned])
+  }, [allCardsAssigned, dispatch]);
 
+  // Theme demo — reveal cards sequentially when idle
   useEffect(() => {
-    // theme demo
-    // use only in idle mode
     if (game.gameState !== "idle") return;
     if (game.cards.length < 1) return;
-    // every card should be revealed after 500ms or so to show a demo of the current theme
+
+    const timeouts: ReturnType<typeof setTimeout>[] = [];
     let currentIndex = 0;
-    let timeout: ReturnType<typeof setTimeout>;
+
     function revealCard() {
       const cardId = cards[currentIndex].id;
       dispatch(cardReveal({ id: cardId }));
       currentIndex++;
       if (currentIndex < cards.length) {
-        timeout = setTimeout(revealCard, 100);
-      } else if (currentIndex === cards.length) {
-        setTimeout(() => dispatch(cardsHide()), 1000);
+        const t = setTimeout(revealCard, 100);
+        timeouts.push(t);
+      } else {
+        const t = setTimeout(() => dispatch(cardsHide()), 1000);
+        timeouts.push(t);
       }
     }
     revealCard();
 
-    return () => clearTimeout(timeout);
-    // eslint-disable-next-line
-  }, [theme]);
+    return () => {
+      timeouts.forEach((t) => clearTimeout(t));
+    };
+  }, [theme, game.gameState, game.cards.length, cards, dispatch]);
 
+  // Match/mismatch logic with proper cleanup
   useEffect(() => {
     if (!currentPlayerId) return;
-    if (revealedCards.length === 2) {
-      // successful revealed
-      if (revealedCards[0].icon === revealedCards[1].icon) {
-        // if icons are the same, assign user id to card
-        // this means the cards are out of game
-        setTimeout(() => {
-          dispatch(
-            cardAssign({
-              playerId: currentPlayerId,
-              cardIds: [revealedCards[0].id, revealedCards[1].id],
-            }),
-          );
-        }, DEFAULT_TIMEOUT);
-      } else {
-        // if icons are not the same, hide all cards -- dispatch(cardsHide)
-        setTimeout(() => {
-          dispatch(cardsHide());
-          // next player
-          dispatch(nextPlayerAction());
-        }, DEFAULT_TIMEOUT);
-      }
+    if (revealedCards.length !== 2) return;
+
+    // Clear any pending timeout from previous reveal
+    if (matchTimeoutRef.current) {
+      clearTimeout(matchTimeoutRef.current);
     }
+
+    const isMatch = revealedCards[0].icon === revealedCards[1].icon;
+
+    matchTimeoutRef.current = setTimeout(() => {
+      if (isMatch) {
+        dispatch(
+          cardAssign({
+            playerId: currentPlayerId,
+            cardIds: [revealedCards[0].id, revealedCards[1].id],
+          }),
+        );
+      } else {
+        dispatch(cardsHide());
+        dispatch(nextPlayerAction());
+      }
+      matchTimeoutRef.current = null;
+    }, DEFAULT_TIMEOUT);
+
+    return () => {
+      if (matchTimeoutRef.current) {
+        clearTimeout(matchTimeoutRef.current);
+        matchTimeoutRef.current = null;
+      }
+    };
   }, [revealedCards, dispatch, currentPlayerId]);
 
   const handleReveal = (cardId: string) => {
@@ -103,7 +116,6 @@ const Board: FC = () => {
             <CardContainer
               $flipped={card.revealed || Boolean(card.playerId)}
               onClick={() => {
-                // prevent click if two cards are already revealed
                 if (revealedCards.length < 2) handleReveal(card.id);
               }}
             >
